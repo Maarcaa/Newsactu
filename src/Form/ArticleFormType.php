@@ -3,10 +3,15 @@
 namespace App\Form;
 
 use App\Entity\Article;
+use App\Entity\Category;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class ArticleFormType extends AbstractType
 {
@@ -22,12 +27,17 @@ class ArticleFormType extends AbstractType
             ->add('content', TextareaType::class, [
                 'label' => 'Contenu'
             ])
-            ->add('photo', FilteType::class, [
+            ->add('photo', FileType::class, [
                 'label' => 'Photo',
                 'data_class' => null,
                 'attr' => [
                     'data-default-file' => $options['photo']
                 ]
+            ])
+            ->add('category', EntityType::class, [
+                'class' => Category::class,
+                'choice_label' => 'name',
+                'label' => 'Catégories',
             ])
             ->add('submit', SubmitType::class, [
                 'label' => 'Valider',
