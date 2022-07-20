@@ -8,14 +8,14 @@
 
     <div class="row">
         <div class="col-6 mx-auto">
-            {% include 'include/_flashes.html.twig' %}
+            {% include 'includes/_flashes.html.twig' %}
         </div>
     </div>
 
     <div class="row mx-auto">
         <div class="col-4"><a href="{{ path('create_article') }}" class="btn btn-primary">Ajouter un article</a></div>
         <div class="col-4"></div>
-        <div class="col-4"></div>
+        <div class="col-4"><a href="{{ path('show_trash') }}" class="btn btn-warning"><i class="fa fa-trash"></i> Voir les archives</a></div>
     </div>
 
     <div class="row">
@@ -46,7 +46,7 @@
                         <td>{{ article.updatedAt | date('d/m/Y') }}</td>
                         <td>
                             <a href="{{ path('update_article', {"id": article.id}) }}" class="text-info" title="Modifier l'article"><i class="fa fa-edit"></i></a>
-                            <a href="" class="text-danger" title="Archiver l'article" onclick="return confirm('Voulez-vous archiver cet article ?')"><i class="fa fa-trash"></i></a>
+                            <a href="{{ path('soft_delete_article', {'id' : article.id}) }}" class="text-danger" title="Archiver l'article" onclick="return confirm('Voulez-vous archiver cet article ?')"><i class="fa fa-trash"></i></a>
                         </td>
                     </tr>
                 {% endfor %}
