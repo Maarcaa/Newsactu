@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use DateTime;
 use App\Entity\Article;
+use App\Entity\Category;
 use App\Form\ArticleFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -39,9 +40,10 @@ return $this->redirectToRoute('default_home');
 }
 
         $articles = $entityManager->getRepository(Article::class)->findBy(['deletedAt' => null]);
-
+$categories = $entityManager->getRepository(Category::class)->findAll();
         return $this->render("admin/show_dashboard.html.twig", [
             'articles' => $articles,
+            'categories' => $categories
         ]);
     }
 
@@ -229,4 +231,6 @@ if($photo){
         $this->addFlash('success', "l'article a bien été supprimé de la base de données");
         return $this->redirectToRoute('show_trash');
     }
+
+  
 } # end class
