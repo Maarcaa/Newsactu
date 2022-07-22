@@ -17,10 +17,10 @@ class RegisterFormType extends AbstractType
     {
         $builder
             ->add('email', EmailType::class, [
-                'label' =>'E-mail'
+                'label' => 'E-mail'
             ])
             ->add('password', PasswordType::class, [
-'label' => 'Mot de passe'
+                'label' => 'Mot de passe'
             ])
             ->add('firstname', TextType::class, [
                 'label' => 'Prénom'
@@ -34,9 +34,7 @@ class RegisterFormType extends AbstractType
                 'attr' => [
                     'class' => 'd-block col-3 my-3 mx-auto btn btn-success'
                 ]
-            ])
-           
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
