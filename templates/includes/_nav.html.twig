@@ -1,56 +1,84 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="{{ path('default_home') }}">Newsactu</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="{{ path('default_home') }}">Accueil</a>
-        </li>
+	<div class="container-fluid">
+		<a class="navbar-brand" href="{{ path('default_home') }}">Newsactu</a>
+		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+				<li class="nav-item">
+					<a class="nav-link active" aria-current="page" href="{{ path('default_home') }}">Accueil</a>
+				</li>
 
-        {%  if not app.user %}
-        <li class="nav-item">
-          <a class="nav-link" href="#">S'inscrire</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{{ path('app_login') }}">Se connecter</a>
-        </li>
-        {% endif %}
+				{%  if not app.user %}
+					<li class="nav-item">
+						<a class="nav-link" href="{{ path('user_register') }}">S'inscrire</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="{{ path('app_login') }}">Se connecter</a>
+					</li>
+				{% endif %}
 
-        {% if app.user %}
-        <li class="nav-item">
-          <a class="nav-link" href="#">Espace perso</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href=" {{ path('app_logout') }}">Se déconnecter</a>
-        </li>
-        {% endif %}
+				{% if app.user %}
+					<li class="nav-item">
+						<a class="nav-link" href="#">Espace perso</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href=" {{ path('app_logout') }}">Se déconnecter</a>
+					</li>
+				{% endif %}
 
-        {% if is_granted("ROLE_ADMIN") %}
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Espace admin
-          </a>
-          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item" href="#">Tableau de bord</a></li>
-            <li><a class="dropdown-item" href="#">Ajouter un article</a></li>
-            <li><a class="dropdown-item" href="#">Ajouter une catégorie</a></li>
-          </ul>
-        </li>
-        {% endif %}
+				{% if is_granted("ROLE_ADMIN") %}
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+							Espace admin
+						</a>
+						<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+							<li>
+								<a class="dropdown-item" href="{{ path('show_dashboard') }}">Tableau de bord</a>
+							</li>
+							<li>
+								<a class="dropdown-item" href="{{ path('create_article') }}">Ajouter un article</a>
+							</li>
+							<li>
+								<a class="dropdown-item" href="{{ path('create_category') }}">Ajouter une catégorie</a>
+							</li>
+						</ul>
+					</li>
+				{% endif %}
 
-      </ul>
-    </div>
-  </div>
+			</ul>
+		</div>
+	</div>
 
-  {# {% if app.user %}
+	{% if app.user %}
 
-  <div class="text-nowrap">
-      Vous êtes déjà connecté {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Déconnexion</a>
-  </div>
-  
-  {% endif %} #}
+		<div class="text-nowrap">
+			Vous êtes connecté
+			{{ app.user.firstname }}
+			en tant que :
+			<span class="text-warning">{{ app.user.roles | first }}</span>
+		</div>
+
+	{% endif %}
 
 </nav>
+
+<div class="bg-light">
+
+  {# 1ere façon de faire
+  Lorsque nous n'avons pas de ROUTE dans notre action et qu'il n'y a pas de parametre (ex : {id} est un parametre)
+  On utilisera la fonction twig render() et la fonction (controller)
+  L'appel de l'action se fera de maniere statique, et il faudra renseigner le namespace du controller (App\\Controller\\) puis le nom du controller (RenderController) suivi de :: et le nom de la function (renderCategoriesInNav) Nous devons mettre 2 back-slash pour cet appel (\\) #}
+  
+  {{ render(controller('App\\Controller\\RenderController::renderCategoriesInNav')) }}
+
+{# 2eme facon de faire
+Lorsque nous avons ecrit une route a la fonction render nous pouvons appeler la fonction twig url(qui contient des les parenthese en realité le nom de la route et non l'url) dans la fonction render()
+ex de @Route  /**
+              * @Route("/categories, name="render_categories_in_nav")
+              */ #}
+
+  {# {{ render(url('render_categories_in_nav'))}} #}
+
+</div>

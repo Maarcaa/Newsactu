@@ -11,6 +11,7 @@
 ###< symfony/framework-bundle ###
 
 /.vscode/*
+/.idea/*
 
 ###> phpunit/phpunit ###
 /phpunit.xml
