@@ -32,7 +32,9 @@ class ArticleFormType extends AbstractType
                 'data_class' => null,
                 'attr' => [
                     'data-default-file' => $options['photo']
-                ]
+                ],
+                'required' => false,
+                'mapped' => false,
             ])
             ->add('category', EntityType::class, [
                 'class' => Category::class,
