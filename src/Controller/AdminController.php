@@ -31,16 +31,16 @@ class AdminController extends AbstractController
 
         // 1ere facon se trouve dan,s "access control" ->config/packages/security.yaml à décommenter role/admin
         // 2eme facon de bloquer un acces a un user en fonction de son role
-// Ce bloc de code vous permet de vérifier si le role du user est admin, sinon cela lance une erreur qui est attrapé dans le catch et cela redirige ac un message dans une partie autorisée poiur les différents role
-try {
-    $this->denyAccessUnLessGranted('ROLE_ADMIN');
-} catch (AccessDeniedException $exception){
-$this->addFlash('warning', 'Cette parti du site est réservée aux admins');
-return $this->redirectToRoute('default_home');
-}
+        // Ce bloc de code vous permet de vérifier si le role du user est admin, sinon cela lance une erreur qui est attrapé dans le catch et cela redirige ac un message dans une partie autorisée poiur les différents role
+        try {
+            $this->denyAccessUnLessGranted('ROLE_ADMIN');
+        } catch (AccessDeniedException $exception) {
+            $this->addFlash('warning', 'Cette parti du site est réservée aux admins');
+            return $this->redirectToRoute('default_home');
+        }
 
         $articles = $entityManager->getRepository(Article::class)->findBy(['deletedAt' => null]);
-$categories = $entityManager->getRepository(Category::class)->findAll();
+        $categories = $entityManager->getRepository(Category::class)->findAll();
         return $this->render("admin/show_dashboard.html.twig", [
             'articles' => $articles,
             'categories' => $categories
@@ -217,12 +217,12 @@ $categories = $entityManager->getRepository(Category::class)->findAll();
         // le hardelete ne supprime que la ligne dans la bdd, il n'a pas acces au photo qui sont sur le vscode qu'il faut supprimer nous meme avec la ligne de commande suivante
 
         // suppression manuelle de la photo
-$photo = $article->getPhoto();
+        $photo = $article->getPhoto();
 
-// on utilise la fonction native de PHP unLink() pour supprimer un fichier dans le filesystem(aussi appelé arborescence)
-if($photo){
-    unLink($this->getParameter('uploads_dir'). '/' . $photo);
-};
+        // on utilise la fonction native de PHP unLink() pour supprimer un fichier dans le filesystem(aussi appelé arborescence)
+        if ($photo) {
+            unLink($this->getParameter('uploads_dir') . '/' . $photo);
+        };
 
 
         $entityManager->remove($article);
@@ -231,6 +231,4 @@ if($photo){
         $this->addFlash('success', "l'article a bien été supprimé de la base de données");
         return $this->redirectToRoute('show_trash');
     }
-
-  
 } # end class
